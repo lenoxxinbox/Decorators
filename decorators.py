@@ -6,19 +6,15 @@ def logger(old_function):
 
     def new_function(*args, **kwargs):
         time_function = datetime.now()
-        print(time_function)
         result = old_function(*args, **kwargs)
-        print(result)
-        line = str(time_function) + ' Функция: ' + old_function.__name__ + ' Аргументы: ' + str([args, kwargs]) \
-               + ' Результат: ' + str(result)
+
+        line = '\n' + str(time_function) + ' Функция: ' + old_function.__name__ + '\n' + 'Аргументы: ' + str([args, kwargs]) \
+               + '\n' + ' Результат: ' + str(result)
         with open('logger.txt', 'a+') as file:
             file.writelines(line)
-        print('done')
         return result
 
     return new_function
-
-
 
 
 documents = [
@@ -33,12 +29,12 @@ directories = {
         '3': []
       }
 
-
 @logger
 def main():
     while True:
         user_input = input('Введите команду: ')
         if user_input == 'p':
+            @logger
             def doc_people(documents):
                 input_doc = input('Введите номер документа: ')
                 for docs in documents:
@@ -46,6 +42,7 @@ def main():
                         return docs['name']
             print(doc_people(documents))
         elif user_input == 's':
+            @logger
             def docs_shelf(documents):
                 input_doc_number = input('Введите номер документа: ')
                 for shelf, number in directories.items():
@@ -53,11 +50,13 @@ def main():
                         return f'Документ находится на {shelf} полке'
             print(docs_shelf(documents))
         elif user_input == 'l':
+            @logger
             def doc_list(documents):
                 for docs in documents:
                     print(f'{docs["type"]} {docs["number"]} {docs["name"]}')
             doc_list(documents)
         elif user_input == 'a':
+            @logger
             def doc_add(documents):
                 input_add_type = input('Введите тип документа: ')
                 input_add_number = input('Введите номер документа: ')
@@ -73,5 +72,6 @@ def main():
         elif user_input == 'q':
             print('GoodBye!')
             break
+
 
 main()
