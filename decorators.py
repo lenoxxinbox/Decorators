@@ -34,53 +34,44 @@ directories = {
       }
 
 
-def doc_people(documents):
-    input_doc = input('Введите номер документа: ')
-    for docs in documents:
-        if docs['number'] == input_doc:
-            return docs['name']
-            return None
-
-
-def docs_shelf(documents):
-    input_doc_number = input('Введите номер документа: ')
-    for shelf, number in directories.items():
-        if input_doc_number in number:
-            return f'Документ находится на {shelf} полке'
-
-
-def doc_list(documents):
-    for docs in documents:
-        print(f'{docs["type"]} {docs["number"]} {docs["name"]}')
-
-
-def doc_add(documents):
-    input_add_type = input('Введите тип документа: ')
-    input_add_number = input('Введите номер документа: ')
-    input_add_name = input('Введите имя и фамилию владельца документа: ')
-    input_add_shelf = input('Введите номер полки, на которую необходимо положить новый документ: ')
-    documents.append({'type': input_add_type, 'number': input_add_number, 'name': input_add_name})
-    directories.update({input_add_shelf: input_add_number})
-    print(
-        f'Документ с типом {input_add_type} и номером {input_add_number} добавили на полку с номером {input_add_shelf}')
-
 @logger
 def main():
     while True:
         user_input = input('Введите команду: ')
         if user_input == 'p':
+            def doc_people(documents):
+                input_doc = input('Введите номер документа: ')
+                for docs in documents:
+                    if docs['number'] == input_doc:
+                        return docs['name']
             print(doc_people(documents))
         elif user_input == 's':
+            def docs_shelf(documents):
+                input_doc_number = input('Введите номер документа: ')
+                for shelf, number in directories.items():
+                    if input_doc_number in number:
+                        return f'Документ находится на {shelf} полке'
             print(docs_shelf(documents))
         elif user_input == 'l':
+            def doc_list(documents):
+                for docs in documents:
+                    print(f'{docs["type"]} {docs["number"]} {docs["name"]}')
             doc_list(documents)
         elif user_input == 'a':
+            def doc_add(documents):
+                input_add_type = input('Введите тип документа: ')
+                input_add_number = input('Введите номер документа: ')
+                input_add_name = input('Введите имя и фамилию владельца документа: ')
+                input_add_shelf = input('Введите номер полки, на которую необходимо положить новый документ: ')
+                documents.append({'type': input_add_type, 'number': input_add_number, 'name': input_add_name})
+                directories.update({input_add_shelf: input_add_number})
+                print(f'Документ с типом {input_add_type} и номером {input_add_number} '
+                      f'добавили на полку с номером {input_add_shelf}')
             print(doc_add(documents))
             print(documents)
             print(directories)
         elif user_input == 'q':
             print('GoodBye!')
             break
-
 
 main()
