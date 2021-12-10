@@ -1,23 +1,6 @@
 from datetime import datetime
-import time, os
-
-
-def logger(old_function):
-
-    def new_function(*args, **kwargs):
-        time_function = datetime.now()
-        print(time_function)
-        result = old_function(*args, **kwargs)
-        line = '\n' + str(time_function) + ' Функция: ' + old_function.__name__ + '\n' + 'Аргументы: ' + str(
-            [args, kwargs]) + '\n' + ' Результат: ' + str(result)
-        with open('logger.txt', 'a+') as file:
-            file.writelines(line)
-        return result
-
-    return new_function
-
-
-
+import time
+import os
 
 documents = [
         {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
@@ -31,12 +14,31 @@ directories = {
         '3': []
       }
 
+log_path = '.\logger.txt'
+
+
+def logger(old_function, log_path=log_path):
+
+    def new_function(*args, **kwargs):
+        time_function = datetime.now()
+        print(time_function)
+        result = old_function(*args, **kwargs)
+        line = '\n' + str(time_function) + ' Функция: ' + old_function.__name__ + '\n' + 'Аргументы: ' + str(
+            [args, kwargs]) + '\n' + ' Результат: ' + str(result)
+        with open(log_path, 'a+') as file:
+            file.writelines(line)
+        return result
+
+    return new_function
+
+
 @logger
 def doc_people(documents):
     input_doc = input('Введите номер документа: ')
     for docs in documents:
         if docs['number'] == input_doc:
             return docs['name']
+
 
 @logger
 def docs_shelf(documents):
@@ -45,11 +47,13 @@ def docs_shelf(documents):
         if input_doc_number in number:
             return f'Документ находится на {shelf} полке'
 
+
 @logger
 def doc_list(documents):
     for docs in documents:
         print(f'{docs["type"]} {docs["number"]} {docs["name"]}')
     return len(documents)
+
 
 @logger
 def doc_add(documents):
@@ -63,10 +67,11 @@ def doc_add(documents):
           f'{input_add_number} добавили на полку с номером {input_add_shelf}')
     return len(documents)
 
+
 @logger
 def main():
-    if os.path.exists('logger.txt'):
-        os.remove('logger.txt')
+    if os.path.exists(log_path):
+        os.remove(log_path)
     while True:
         user_input = input('Введите команду: ')
         if user_input == 'p':
