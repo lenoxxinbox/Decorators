@@ -1,6 +1,43 @@
+# Задание 1.
+
 from datetime import datetime
 import time
 import os
+
+def logger(old_function):
+
+    def new_function(*args, **kwargs):
+        time_function = datetime.now()
+        print(time_function)
+        result = old_function(*args, **kwargs)
+        line = '\n' + str(time_function) + ' Функция: ' + old_function.__name__ + '\n' + 'Аргументы: ' + str(
+            [args, kwargs]) + '\n' + ' Результат: ' + str(result)
+        with open(log_path, 'a+') as file:
+            file.writelines(line)
+        return result
+
+    return new_function
+
+# Задание 2.
+
+log_path = '.\logger.txt'
+
+
+def logger(old_function, log_path=log_path):
+
+    def new_function(*args, **kwargs):
+        time_function = datetime.now()
+        print(time_function)
+        result = old_function(*args, **kwargs)
+        line = '\n' + str(time_function) + ' Функция: ' + old_function.__name__ + '\n' + 'Аргументы: ' + str(
+            [args, kwargs]) + '\n' + ' Результат: ' + str(result)
+        with open(log_path, 'a+') as file:
+            file.writelines(line)
+        return result
+
+    return new_function
+
+# Задание 3.
 
 documents = [
         {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
